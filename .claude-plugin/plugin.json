@@ -6,7 +6,5 @@
   "repository": "https://github.com/Maxilylm/ml-automation-mmm",
   "license": "MIT",
   "keywords": ["mmm", "media-mix", "bayesian", "marketing", "ml-automation-extension", "pymc", "channel-attribution"],
-  "dependencies": {
-    "ml-automation": ">=1.8.0"
-  }
+  "dependencies": ["ml-automation-core"]
 }

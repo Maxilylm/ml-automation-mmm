@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Environment (keep environment.yaml and requirements.txt, ignore installed env)
+knowledge_base/mmm/BMMM-env/envs/
+knowledge_base/mmm/BMMM-env/lib/
+knowledge_base/mmm/BMMM-env/bin/
+knowledge_base/mmm/BMMM-env/include/
+knowledge_base/mmm/BMMM-env/ENV_META.json
+*.conda
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime artifacts (created in user projects, not plugin)
+reports/
+feedback/
+models/

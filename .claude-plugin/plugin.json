@@ -1,6 +1,6 @@
 {
   "name": "ml-automation-mmm",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Media Mix Modeling extension for ml-automation. Bayesian MMM with adstock, saturation, channel attribution, and client-ready reporting.",
   "author": { "name": "Maximo Lorenzo y Losada" },
   "repository": "https://github.com/Maxilylm/ml-automation-mmm",

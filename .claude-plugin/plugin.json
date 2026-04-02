@@ -1,10 +1,10 @@
 {
-  "name": "ml-automation-mmm",
+  "name": "spark-mmm",
   "version": "0.2.0",
-  "description": "Media Mix Modeling extension for ml-automation. Bayesian MMM with adstock, saturation, channel attribution, and client-ready reporting.",
+  "description": "Media Mix Modeling extension for spark. Bayesian MMM with adstock, saturation, channel attribution, and client-ready reporting.",
   "author": { "name": "Maximo Lorenzo y Losada" },
   "repository": "https://github.com/Maxilylm/ml-automation-mmm",
   "license": "MIT",
-  "keywords": ["mmm", "media-mix", "bayesian", "marketing", "ml-automation-extension", "pymc", "channel-attribution"],
-  "dependencies": ["ml-automation-core"]
+  "keywords": ["mmm", "media-mix", "bayesian", "marketing", "spark-extension", "pymc", "channel-attribution"],
+  "dependencies": ["spark-core"]
 }

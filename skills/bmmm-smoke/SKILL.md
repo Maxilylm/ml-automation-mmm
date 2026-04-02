@@ -3,7 +3,7 @@ name: bmmm-smoke
 description: "Fast smoke test for the Bayesian MMM toolchain — verifies environment, imports, and sampler without full MCMC. Use this whenever you need to validate the MMM environment works before committing to a long training run, or after environment setup."
 user_invocable: true
 aliases: [mmm smoke, smoke test mmm]
-extends: ml-automation
+extends: spark
 ---
 
 # BMMM Smoke Test

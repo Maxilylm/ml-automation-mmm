@@ -1,4 +1,4 @@
-# ml-automation-mmm
+# spark-mmm
 
 Media Mix Modeling extension for [ml-automation](https://github.com/Maxilylm/ml-automation-core).
 
@@ -10,7 +10,7 @@ Media Mix Modeling extension for [ml-automation](https://github.com/Maxilylm/ml-
 ## Installation
 
 ```bash
-claude plugin add /path/to/ml-automation-mmm
+claude plugin add /path/to/spark-mmm
 ```
 
 ## What's Included

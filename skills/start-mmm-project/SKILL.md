@@ -3,7 +3,7 @@ name: start-mmm-project
 description: "Bootstrap a new MMM project — generates problem brief, data readiness checklist, and design memo from the MMM knowledge pack. Use this whenever a user has media/marketing spend data and wants to begin a Marketing Mix Model, even if they just say 'analyze my marketing data' or 'set up an MMM'."
 user_invocable: true
 aliases: [mmm start, start mmm, bootstrap mmm]
-extends: ml-automation
+extends: spark
 ---
 
 # Start MMM Project

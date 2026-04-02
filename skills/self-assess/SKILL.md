@@ -3,7 +3,7 @@ name: self-assess
 description: "Aggregate self-assessment feedback files across MMM runs and surface recurring patterns as improvement recommendations. Use this whenever you want to review how past MMM runs performed, even if the user just says 'how are we doing' or 'review past runs'."
 user_invocable: true
 aliases: [self assess, review feedback, mmm feedback]
-extends: ml-automation
+extends: spark
 ---
 
 # Self-Assessment Aggregator

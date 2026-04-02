@@ -3,7 +3,7 @@ name: mmm-communicate
 description: "Convert MMM technical results into a client-ready business narrative using the mmm-communicator agent. Use this whenever the user wants to share MMM findings with stakeholders, even if they just say 'make it client-ready' or 'write the executive summary'."
 user_invocable: true
 aliases: [mmm communicate, mmm client report, mmm narrative]
-extends: ml-automation
+extends: spark
 ---
 
 # MMM Communicate

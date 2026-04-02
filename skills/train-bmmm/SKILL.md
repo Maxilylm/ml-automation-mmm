@@ -3,7 +3,7 @@ name: train-bmmm
 description: "Run full Bayesian MMM training with MCMC sampling using the managed environment runner. Use this whenever the user wants to train, fit, or run a Bayesian Media Mix Model, even if they just say 'run the model' or 'fit the MMM'."
 user_invocable: true
 aliases: [train mmm, mmm train, bmmm train]
-extends: ml-automation
+extends: spark
 ---
 
 # Train BMMM

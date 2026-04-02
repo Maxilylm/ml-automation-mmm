@@ -3,7 +3,7 @@ name: final-mmm-report
 description: "Generate a consolidated final report for an MMM project from all pipeline artifacts. Use this whenever a training run is complete and you need a single document summarizing the entire MMM analysis, even if the user just says 'write the report' or 'summarize results'."
 user_invocable: true
 aliases: [mmm report, mmm final report]
-extends: ml-automation
+extends: spark
 ---
 
 # Final MMM Report

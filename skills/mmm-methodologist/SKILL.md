@@ -3,7 +3,7 @@ name: mmm-methodologist
 description: "Gate command for MMM methodologist review — scores complexity signals and decides whether a full expert review is needed before training. Use this after /start-mmm-project to validate the design, even if the user just says 'review the design' or 'check if we're ready to train'."
 user_invocable: true
 aliases: [mmm methodologist, methodologist review, mmm review]
-extends: ml-automation
+extends: spark
 ---
 
 # MMM Methodologist Gate

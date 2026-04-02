@@ -3,7 +3,7 @@ name: ensure-bmmm-env
 description: "Ensure the Bayesian MMM conda/venv environment exists with all required dependencies. Use this whenever you need PyMC or pymc-marketing available, even if the user just says 'set up the environment' or 'install MMM dependencies'."
 user_invocable: true
 aliases: [bmmm env, mmm env, ensure mmm env, ensure bmmm env]
-extends: ml-automation
+extends: spark
 ---
 
 # Ensure BMMM Environment

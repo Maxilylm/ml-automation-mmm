@@ -1,7 +1,7 @@
 """
-MMM-specific utilities for the ml-automation-mmm extension plugin.
+MMM-specific utilities for the spark-mmm extension plugin.
 
-Requires ml_utils.py from the ml-automation core plugin to be present
+Requires ml_utils.py from the spark core plugin to be present
 in the same directory (copied via Stage 0 of MMM commands).
 """
 

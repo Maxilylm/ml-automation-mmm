@@ -4,7 +4,7 @@ description: "Convert MMM technical results into client-ready business narrative
 model: sonnet
 color: "#DC2F02"
 tools: [Read, Write, Glob, Grep]
-extends: ml-automation
+extends: spark
 routing_keywords: [mmm report, mmm client report, mmm narrative, mmm delivery, mmm presentation]
 ---
 

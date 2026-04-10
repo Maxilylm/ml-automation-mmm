@@ -1,4 +1,244 @@
-# MMM Knowledge Base Index
-# TODO: Copy from BLEND360/spark-bayesian-mmm-agent repository.
-# This file indexes all chunks by tag for retrieval.
-chunks: []
+domain: mmm
+generated_at: "2026-03-04"
+selection_rules:
+  max_chunks_default: 8
+  max_chunks_hard_cap: 10
+  index_first: true
+  never_scan_directories: true
+  playbook_policy: "Do not open playbook/deep_refs/MMM_PLAYBOOK.md unless explicitly needed. Prefer CORE + selected chunks."
+chunks:
+- id: ADST_001
+  path: chunks/methods/ADST_001.md
+  title: "GeometricAdstock — instantiation and default prior"
+  tags: [adstock, geometric, carryover, prior, decay, digital]
+  use_when: "Use when you need guidance on: adstock, geometric, carryover, prior."
+- id: ADST_002
+  path: chunks/methods/ADST_002.md
+  title: "WeibullCDFAdstock — long-lag channels"
+  tags: [adstock, weibull, tv, ooh, long_lag, carryover]
+  use_when: "Use when you need guidance on: adstock, weibull, tv, ooh."
+- id: ADST_003
+  path: chunks/methods/ADST_003.md
+  title: "DelayedAdstock — peak-delayed carryover"
+  tags: [adstock, delayed, theta, peak_delay, carryover]
+  use_when: "Use when you need guidance on: adstock, delayed, theta, peak_delay."
+- id: ADST_004
+  path: chunks/methods/ADST_004.md
+  title: "NoAdstock — when to skip carryover"
+  tags: [adstock, no_adstock, pitfall, identification]
+  use_when: "Use when you need guidance on: adstock, no_adstock, pitfall, identification."
+- id: CAL_001
+  path: chunks/methods/CAL_001.md
+  title: "add_lift_test_measurements — geo-lift calibration API"
+  tags: [calibration, lift_test, geo_lift, add_lift_test_measurements, roas]
+  use_when: "Use when you need guidance on: calibration, lift_test, geo_lift, add_lift_test_measurements."
+- id: CAL_002
+  path: chunks/methods/CAL_002.md
+  title: "Calibration sigma selection — experiment quality tiers"
+  tags: [calibration, sigma, lift_test, uncertainty, roas, geo_lift]
+  use_when: "Use when you need guidance on: calibration, sigma, lift_test, uncertainty."
+- id: CAL_003
+  path: chunks/methods/CAL_003.md
+  title: "When NOT to calibrate — exclusion criteria"
+  tags: [calibration, exclusion, lift_test, pitfall, data_quality]
+  use_when: "Use when you need guidance on: calibration, exclusion, lift_test, pitfall."
+- id: HIER_001
+  path: chunks/implementation/HIER_001.md
+  title: "Geo/multi-dimensional model — MMM instantiation"
+  tags: [geo, multi_dimensional, hierarchical, dims, pooling]
+  use_when: "Use when you need guidance on: geo, multi_dimensional, hierarchical, dims."
+- id: HIER_002
+  path: chunks/implementation/HIER_002.md
+  title: "Pooling strategy — when to pool, partial pool, or unpool"
+  tags: [hierarchical, pooling, partial_pooling, unpooled, geo]
+  use_when: "Use when you need guidance on: hierarchical, pooling, partial_pooling, unpooled."
+- id: HIER_003
+  path: chunks/implementation/HIER_003.md
+  title: "Collinearity — diagnosis and mitigation"
+  tags: [collinearity, correlation, identification, pitfall, channels]
+  use_when: "Use when you need guidance on: collinearity, correlation, identification, pitfall."
+- id: HIER_004
+  path: chunks/implementation/HIER_004.md
+  title: "Data contract — column_config and channel type declaration"
+  tags: [data_contract, column_config, paid_channels, spend_mapping, schema]
+  use_when: "Use when you need guidance on: data_contract, column_config, paid_channels, spend_mapping."
+- id: MODEL_001
+  path: chunks/implementation/MODEL_001.md
+  title: "MMM class — fit and predict API"
+  tags: [mmm, fit, predict, api, entry_point, pymc_marketing]
+  use_when: "Use when you need guidance on: mmm, fit, predict, api."
+- id: MODEL_002
+  path: chunks/implementation/MODEL_002.md
+  title: "Log-transform order and inverse-transform pitfall"
+  tags: [log_transform, exp, inverse_transform, pitfall, jensens_inequality, scale]
+  use_when: "Use when you need guidance on: log_transform, exp, inverse_transform, pitfall."
+- id: MODEL_003
+  path: chunks/implementation/MODEL_003.md
+  title: "Prior predictive check — required before sampling"
+  tags: [prior_predictive, sanity_check, priors, model_build, bayesian, target_scale, collapse]
+  use_when: "Use when writing or reviewing the prior predictive step in a build script, or when diagnosing MCMC collapse after adding a prior predictive check."
+- id: MODEL_004
+  path: chunks/implementation/MODEL_004.md
+  title: "Sampler configuration — recommended settings"
+  tags: [sampler, nuts, numpyro, chains, target_accept, draws, convergence]
+  use_when: "Use when you need guidance on: sampler, nuts, numpyro, chains."
+- id: MODEL_005
+  path: chunks/implementation/MODEL_005.md
+  title: "Seasonality — Fourier terms configuration"
+  tags: [seasonality, fourier, priors, laplace, sparse, controls]
+  use_when: "Use when you need guidance on: seasonality, fourier, priors, laplace."
+- id: OPT_001
+  path: chunks/methods/OPT_001.md
+  title: "Budget optimizer — MultiDimensionalBudgetOptimizerWrapper"
+  tags: [budget_optimizer, slsqp, allocation, scipy, multi_dimensional]
+  use_when: "Use when you need guidance on: budget_optimizer, slsqp, allocation, scipy."
+- id: OPT_002
+  path: chunks/methods/OPT_002.md
+  title: "Budget optimization — scipy SLSQP manual pattern"
+  tags: [budget_optimizer, slsqp, scipy, manual, response_curves]
+  use_when: "Use when you need guidance on: budget_optimizer, slsqp, scipy, manual."
+- id: OPT_003
+  path: chunks/methods/OPT_003.md
+  title: "Optimization output standards — required deliverable elements"
+  tags: [optimization, deliverable, sensitivity, marginal_roas, uncertainty]
+  use_when: "Use when you need guidance on: optimization, deliverable, sensitivity, marginal_roas."
+- id: PRIOR_001
+  path: chunks/methods/PRIOR_001.md
+  title: "Spend-share priors — standard configuration"
+  tags: [priors, spend_share, intercept, gamma_control, config, yaml]
+  use_when: "Use when you need guidance on: priors, spend_share, intercept, gamma_control."
+- id: PRIOR_002
+  path: chunks/methods/PRIOR_002.md
+  title: "Per-channel heterogeneous priors — PerChannelDistributionFactory"
+  tags: [priors, per_channel, heterogeneous, factory, HalfNormal, custom]
+  use_when: "Use when you need guidance on: priors, per_channel, heterogeneous, factory."
+- id: PRIOR_003
+  path: chunks/methods/PRIOR_003.md
+  title: "Hierarchical priors — non-centered parameterisation"
+  tags: [hierarchical, non_centered, geo, partial_pooling, saturation_beta]
+  use_when: "Use when you need guidance on: hierarchical, non_centered, geo, partial_pooling."
+- id: PRIOR_004
+  path: chunks/methods/PRIOR_004.md
+  title: "Scaling — global max scaling for multi-dimensional models"
+  tags: [scaling, normalization, global_max, multi_dimensional, leakage]
+  use_when: "Use when you need guidance on: scaling, normalization, global_max, multi_dimensional."
+- id: PRIOR_005
+  path: chunks/methods/PRIOR_005.md
+  title: "Config file structure — mmm_config.yml reference"
+  tags: [config, yaml, mmm_config, channels, sampler, data_contract]
+  use_when: "Use when you need guidance on: config, yaml, mmm_config, channels."
+- id: PRIOR_006
+  path: chunks/methods/PRIOR_006.md
+  title: "Target scaling in pymc-marketing — prior calibration for max-scaled [0,1] target"
+  tags: [scaling, target_scale, intercept, saturation_beta, prior_calibration, collapse, degenerate_posterior]
+  use_when: "Use when deciding which intercept prior to use (y_scaled_mean pre-flight rule + prior predictive gate), when calibrating intercept or saturation_beta priors, when prior predictive is wildly off-scale, or when diagnosing degenerate posterior collapse (all params⊒0, ESS=4)."
+- id: REPORT_001
+  path: chunks/implementation/REPORT_001.md
+  title: "get_individual_contributions — decomposition API"
+  tags: [contributions, decomposition, channels, intercept, seasonality]
+  use_when: "Use when you need guidance on: contributions, decomposition, channels, intercept."
+- id: REPORT_002
+  path: chunks/implementation/REPORT_002.md
+  title: "calculate_roas — ROAS with uncertainty"
+  tags: [roas, iroas, hdi, uncertainty, calculate_roas, reporting]
+  use_when: "Use when you need guidance on: roas, iroas, hdi, uncertainty."
+- id: REPORT_003
+  path: chunks/implementation/REPORT_003.md
+  title: "calculate_marginal_roas — mROAS implementation note"
+  tags: [marginal_roas, mroas, visits_column, spend_mapping, implementation_note]
+  use_when: "Use when you need guidance on: marginal_roas, mroas, visits_column, spend_mapping."
+- id: REPORT_004
+  path: chunks/implementation/REPORT_004.md
+  title: "compare_predictions — counterfactual scenario analysis"
+  tags: [counterfactual, compare_predictions, shutdown_channels, marginal_changes]
+  use_when: "Use when you need guidance on: counterfactual, compare_predictions, shutdown_channels, marginal_changes."
+- id: REPORT_005
+  path: chunks/implementation/REPORT_005.md
+  title: "analyze_revenue_vs_spend_levels — response curves"
+  tags: [response_curves, spend_levels, saturation, roas, optimization_input]
+  use_when: "Use when you need guidance on: response_curves, spend_levels, saturation, roas."
+- id: REPORT_006
+  path: chunks/implementation/REPORT_006.md
+  title: "Reporting standards — ROAS table format and HDI requirement"
+  tags: [reporting, hdi, roas_table, deliverable_standards, calibration_status]
+  use_when: "Use when you need guidance on: reporting, hdi, roas_table, deliverable_standards."
+- id: SAT_001
+  path: chunks/methods/SAT_001.md
+  title: "LogisticSaturation — default saturation transform"
+  tags: [saturation, logistic, diminishing_returns, default, prior]
+  use_when: "Use when you need guidance on: saturation, logistic, diminishing_returns, default."
+- id: SAT_004
+  path: chunks/methods/SAT_004.md
+  title: "Burst/intermittent spend — NoSaturation rule"
+  tags: [saturation, burst, intermittent, zero_rate, no_saturation, identification, pitfall]
+  use_when: "Use when a channel has many zero weeks, burst spend, or intermittent media activity."
+- id: SAT_002
+  path: chunks/methods/SAT_002.md
+  title: "HillSaturation — S-curve with explicit half-saturation"
+  tags: [saturation, hill, s_curve, kappa, slope, prior]
+  use_when: "Use when you need guidance on: saturation, hill, s_curve, kappa."
+- id: SAT_003
+  path: chunks/methods/SAT_003.md
+  title: "Saturation catalogue — all available transforms"
+  tags: [saturation, catalogue, michaelis_menten, tanh, root, selection]
+  use_when: "Use when you need guidance on: saturation, catalogue, michaelis_menten, tanh."
+- id: TREND_001
+  path: chunks/methods/TREND_001.md
+  title: "Linear trend control — when to include and how to configure"
+  tags: [trend, collinearity, controls, secular_growth, identification, attribution, baseline]
+  use_when: "Use when deciding whether to include a linear trend, when a trend was removed for collinearity reasons, or when the trend coefficient is unexpectedly negative after fitting."
+- id: UTIL_001
+  path: chunks/implementation/UTIL_001.md
+  title: "Divergence triage — diagnosis and fixes"
+  tags: [divergences, convergence, funnel, reparameterize, debug]
+  use_when: "Use when you need guidance on: divergences, convergence, funnel, reparameterize."
+- id: UTIL_002
+  path: chunks/implementation/UTIL_002.md
+  title: "idata I/O — save and reload InferenceData"
+  tags: [idata, save, load, netcdf, reproducibility, checkpoint]
+  use_when: "Use when you need guidance on: idata, save, load, netcdf."
+- id: UTIL_003
+  path: chunks/diagnostics/UTIL_003.md
+  title: "Promo confounding — detection and mitigation"
+  tags: [promo, confounding, event, dummy, attribution, pitfall]
+  use_when: "Use when you need guidance on: promo, confounding, event, dummy."
+- id: UTIL_004
+  path: chunks/diagnostics/UTIL_004.md
+  title: "Escalation rules — when to stop and escalate"
+  tags: [escalation, gate, convergence, mape, experiment_conflict]
+  use_when: "Use when you need guidance on: escalation, gate, convergence, mape."
+- id: UTIL_005
+  path: chunks/implementation/UTIL_005.md
+  title: "YAML config loading — build_from_yml pattern"
+  tags: [yaml, config, build_from_yml, adstock, saturation, serialization]
+  use_when: "Use when you need guidance on: yaml, config, build_from_yml, adstock."
+- id: VALID_001
+  path: chunks/diagnostics/VALID_001.md
+  title: "Convergence gates — R-hat, ESS, divergences"
+  tags: [convergence, rhat, ess, divergences, arviz, gate, mcmc, attribution, roas, baseline]
+  use_when: "Use when checking MCMC convergence or when a model converges but attribution looks wrong (high ROAS, low baseline)."
+- id: VALID_002
+  path: chunks/diagnostics/VALID_002.md
+  title: "Holdout validation — MAPE/WAPE benchmarks"
+  tags: [holdout, mape, wape, backtest, validation, fit_quality, gate]
+  use_when: "Use when you need guidance on: holdout, mape, wape, backtest."
+- id: VALID_003
+  path: chunks/diagnostics/VALID_003.md
+  title: "Contribution sanity checks — sum-to-total and plausibility"
+  tags: [contributions, sanity_check, sum_to_total, baseline, attribution]
+  use_when: "Use when you need guidance on: contributions, sanity_check, sum_to_total, baseline."
+- id: VALID_004
+  path: chunks/diagnostics/VALID_004.md
+  title: "Data quality pre-flight — NaN and CV checks"
+  tags: [data_quality, nan, missing_values, cv, pre_flight, leakage]
+  use_when: "Use when running b2b_src hierarchical framework — requires b2b_src.config_loader. For standard projects use PREFLIGHT_001."
+- id: PREFLIGHT_001
+  path: chunks/diagnostics/PREFLIGHT_001.md
+  title: "Standard data pre-flight — pure pandas checks"
+  tags: [data_quality, nan, missing_values, cv, zero_rate, pre_flight, date_column, collinearity]
+  use_when: "Use for standard MMM data pre-flight (no custom framework). Covers NaN, zero rate, CV, collinearity, date column."
+- id: DATA_TYPE_001
+  path: chunks/diagnostics/DATA_TYPE_001.md
+  title: "Time-series vs. cross-sectional detection — early exit rules"
+  tags: [data_type, time_series, cross_sectional, date_column, early_exit, pre_flight]
+  use_when: "Use when profiling a new dataset to determine if it is suitable for Bayesian MMM. Run before generating any project documents."

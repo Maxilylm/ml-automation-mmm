@@ -1,0 +1,15 @@
+domain: mmm
+generated_at: '2026-03-04'
+templates:
+- id: data_readiness_mmm
+  path: templates/data_readiness_mmm.md
+  use_when: Instantiate to generate data_readiness_mmm.md.
+  token_est: 448
+- id: design_memo_mmm
+  path: templates/design_memo_mmm.md
+  use_when: Instantiate to generate design_memo_mmm.md.
+  token_est: 517
+- id: problem_brief_mmm
+  path: templates/problem_brief_mmm.md
+  use_when: Instantiate to generate problem_brief_mmm.md.
+  token_est: 327

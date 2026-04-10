@@ -1,0 +1,705 @@
+{
+  "domain": "mmm",
+  "generated_at": "2026-02-22",
+  "total_chunks": 32,
+  "config_ref": "distill_config.yaml",
+  "chunks_dir": "chunks/",
+  "categories_present": [
+    "transformations",
+    "core_modeling",
+    "priors_constraints",
+    "calibration",
+    "validation",
+    "reporting",
+    "optimization"
+  ],
+  "category_counts": {
+    "transformations": 7,
+    "core_modeling": 14,
+    "priors_constraints": 5,
+    "calibration": 3,
+    "validation": 6,
+    "reporting": 6,
+    "optimization": 3
+  },
+  "tag_index": {
+    "adstock": [
+      "ADST_001",
+      "ADST_002",
+      "ADST_003",
+      "ADST_004"
+    ],
+    "saturation": [
+      "SAT_001",
+      "SAT_002",
+      "SAT_003"
+    ],
+    "calibration": [
+      "CAL_001",
+      "CAL_002",
+      "CAL_003"
+    ],
+    "roas": [
+      "CAL_001",
+      "CAL_002",
+      "REPORT_002",
+      "REPORT_003",
+      "REPORT_006",
+      "OPT_001",
+      "OPT_003"
+    ],
+    "convergence": [
+      "VALID_001",
+      "UTIL_001",
+      "MODEL_004"
+    ],
+    "holdout": [
+      "VALID_002"
+    ],
+    "priors": [
+      "PRIOR_001",
+      "PRIOR_002",
+      "PRIOR_003",
+      "MODEL_003"
+    ],
+    "hierarchical": [
+      "PRIOR_003",
+      "HIER_001",
+      "HIER_002"
+    ],
+    "geo": [
+      "PRIOR_003",
+      "PRIOR_004",
+      "HIER_001",
+      "HIER_002"
+    ],
+    "pitfall": [
+      "ADST_004",
+      "SAT_001",
+      "MODEL_002",
+      "HIER_003",
+      "UTIL_003"
+    ],
+    "optimization": [
+      "OPT_001",
+      "OPT_002",
+      "OPT_003",
+      "REPORT_005"
+    ],
+    "data_contract": [
+      "HIER_004",
+      "PRIOR_005",
+      "VALID_004"
+    ]
+  },
+  "chunks": [
+    {
+      "id": "ADST_001",
+      "file": "chunks/methods/ADST_001.md",
+      "title": "GeometricAdstock \u2014 instantiation and default prior",
+      "category": "transformations",
+      "tags": [
+        "adstock",
+        "geometric",
+        "carryover",
+        "prior",
+        "decay",
+        "digital"
+      ],
+      "source": "pymc_marketing/mmm/components/adstock.py"
+    },
+    {
+      "id": "ADST_002",
+      "file": "chunks/methods/ADST_002.md",
+      "title": "WeibullCDFAdstock \u2014 long-lag channels",
+      "category": "transformations",
+      "tags": [
+        "adstock",
+        "weibull",
+        "tv",
+        "ooh",
+        "long_lag",
+        "carryover"
+      ],
+      "source": "pymc_marketing/mmm/components/adstock.py"
+    },
+    {
+      "id": "ADST_003",
+      "file": "chunks/methods/ADST_003.md",
+      "title": "DelayedAdstock \u2014 peak-delayed carryover",
+      "category": "transformations",
+      "tags": [
+        "adstock",
+        "delayed",
+        "theta",
+        "peak_delay",
+        "carryover"
+      ],
+      "source": "pymc_marketing/mmm/components/adstock.py"
+    },
+    {
+      "id": "ADST_004",
+      "file": "chunks/methods/ADST_004.md",
+      "title": "NoAdstock \u2014 when to skip carryover",
+      "category": "transformations",
+      "tags": [
+        "adstock",
+        "no_adstock",
+        "pitfall",
+        "identification"
+      ],
+      "source": "pymc_marketing/mmm/components/adstock.py"
+    },
+    {
+      "id": "SAT_001",
+      "file": "chunks/methods/SAT_001.md",
+      "title": "LogisticSaturation \u2014 default saturation transform",
+      "category": "transformations",
+      "tags": [
+        "saturation",
+        "logistic",
+        "diminishing_returns",
+        "default",
+        "prior"
+      ],
+      "source": "pymc_marketing/mmm/components/saturation.py"
+    },
+    {
+      "id": "SAT_002",
+      "file": "chunks/methods/SAT_002.md",
+      "title": "HillSaturation \u2014 S-curve with explicit half-saturation",
+      "category": "transformations",
+      "tags": [
+        "saturation",
+        "hill",
+        "s_curve",
+        "kappa",
+        "slope",
+        "prior"
+      ],
+      "source": "pymc_marketing/mmm/components/saturation.py"
+    },
+    {
+      "id": "SAT_003",
+      "file": "chunks/methods/SAT_003.md",
+      "title": "Saturation catalogue \u2014 all available transforms",
+      "category": "transformations",
+      "tags": [
+        "saturation",
+        "catalogue",
+        "michaelis_menten",
+        "tanh",
+        "root",
+        "selection"
+      ],
+      "source": "pymc_marketing/mmm/components/saturation.py"
+    },
+    {
+      "id": "MODEL_001",
+      "file": "chunks/implementation/MODEL_001.md",
+      "title": "MMM class \u2014 fit and predict API",
+      "category": "core_modeling",
+      "tags": [
+        "mmm",
+        "fit",
+        "predict",
+        "api",
+        "entry_point",
+        "pymc_marketing"
+      ],
+      "source": "pymc_marketing/mmm/mmm.py"
+    },
+    {
+      "id": "MODEL_002",
+      "file": "chunks/implementation/MODEL_002.md",
+      "title": "Log-transform order and inverse-transform pitfall",
+      "category": "core_modeling",
+      "tags": [
+        "log_transform",
+        "exp",
+        "inverse_transform",
+        "pitfall",
+        "jensens_inequality",
+        "scale"
+      ],
+      "source": "pymc_marketing/mmm/mmm.py"
+    },
+    {
+      "id": "MODEL_003",
+      "file": "chunks/implementation/MODEL_003.md",
+      "title": "Prior predictive check \u2014 required before sampling",
+      "category": "core_modeling",
+      "tags": [
+        "prior_predictive",
+        "sanity_check",
+        "priors",
+        "model_build",
+        "bayesian"
+      ],
+      "source": "pymc_marketing/mmm/base.py"
+    },
+    {
+      "id": "MODEL_004",
+      "file": "chunks/implementation/MODEL_004.md",
+      "title": "Sampler configuration \u2014 recommended settings",
+      "category": "core_modeling",
+      "tags": [
+        "sampler",
+        "nuts",
+        "numpyro",
+        "chains",
+        "target_accept",
+        "draws",
+        "convergence"
+      ],
+      "source": "pymc_marketing/model_builder.py"
+    },
+    {
+      "id": "MODEL_005",
+      "file": "chunks/implementation/MODEL_005.md",
+      "title": "Seasonality \u2014 Fourier terms configuration",
+      "category": "core_modeling",
+      "tags": [
+        "seasonality",
+        "fourier",
+        "priors",
+        "laplace",
+        "sparse",
+        "controls"
+      ],
+      "source": "pymc_marketing/mmm/fourier.py"
+    },
+    {
+      "id": "PRIOR_001",
+      "file": "chunks/methods/PRIOR_001.md",
+      "title": "Spend-share priors \u2014 standard configuration",
+      "category": "priors_constraints",
+      "tags": [
+        "priors",
+        "spend_share",
+        "intercept",
+        "gamma_control",
+        "config",
+        "yaml"
+      ],
+      "source": "pymc_marketing/prior.py"
+    },
+    {
+      "id": "PRIOR_002",
+      "file": "chunks/methods/PRIOR_002.md",
+      "title": "Per-channel heterogeneous priors \u2014 PerChannelDistributionFactory",
+      "category": "priors_constraints",
+      "tags": [
+        "priors",
+        "per_channel",
+        "heterogeneous",
+        "factory",
+        "HalfNormal",
+        "custom"
+      ],
+      "source": "b2b_src/Prior_upgrade.py"
+    },
+    {
+      "id": "PRIOR_003",
+      "file": "chunks/methods/PRIOR_003.md",
+      "title": "Hierarchical priors \u2014 non-centered parameterisation",
+      "category": "priors_constraints",
+      "tags": [
+        "hierarchical",
+        "non_centered",
+        "geo",
+        "partial_pooling",
+        "saturation_beta"
+      ],
+      "source": "geo_config.yml"
+    },
+    {
+      "id": "PRIOR_004",
+      "file": "chunks/methods/PRIOR_004.md",
+      "title": "Scaling \u2014 global max scaling for multi-dimensional models",
+      "category": "priors_constraints",
+      "tags": [
+        "scaling",
+        "normalization",
+        "global_max",
+        "multi_dimensional",
+        "leakage"
+      ],
+      "source": "pymc_marketing/mmm/scaling.py"
+    },
+    {
+      "id": "PRIOR_005",
+      "file": "chunks/methods/PRIOR_005.md",
+      "title": "Config file structure \u2014 mmm_config.yml reference",
+      "category": "priors_constraints",
+      "tags": [
+        "config",
+        "yaml",
+        "mmm_config",
+        "channels",
+        "sampler",
+        "data_contract"
+      ],
+      "source": "mmm_config.yml"
+    },
+    {
+      "id": "CAL_001",
+      "file": "chunks/methods/CAL_001.md",
+      "title": "add_lift_test_measurements \u2014 geo-lift calibration API",
+      "category": "calibration",
+      "tags": [
+        "calibration",
+        "lift_test",
+        "geo_lift",
+        "add_lift_test_measurements",
+        "roas"
+      ],
+      "source": "pymc_marketing/mmm/lift_test.py"
+    },
+    {
+      "id": "CAL_002",
+      "file": "chunks/methods/CAL_002.md",
+      "title": "Calibration sigma selection \u2014 experiment quality tiers",
+      "category": "calibration",
+      "tags": [
+        "calibration",
+        "sigma",
+        "lift_test",
+        "uncertainty",
+        "roas",
+        "geo_lift"
+      ],
+      "source": "pymc_marketing/mmm/lift_test.py"
+    },
+    {
+      "id": "CAL_003",
+      "file": "chunks/methods/CAL_003.md",
+      "title": "When NOT to calibrate \u2014 exclusion criteria",
+      "category": "calibration",
+      "tags": [
+        "calibration",
+        "exclusion",
+        "lift_test",
+        "pitfall",
+        "data_quality"
+      ],
+      "source": "pymc_marketing/mmm/lift_test.py"
+    },
+    {
+      "id": "VALID_001",
+      "file": "chunks/diagnostics/VALID_001.md",
+      "title": "Convergence gates \u2014 R-hat, ESS, divergences",
+      "category": "validation",
+      "tags": [
+        "convergence",
+        "rhat",
+        "ess",
+        "divergences",
+        "arviz",
+        "gate",
+        "mcmc"
+      ],
+      "source": "pymc_marketing/mmm/evaluation.py"
+    },
+    {
+      "id": "VALID_002",
+      "file": "chunks/diagnostics/VALID_002.md",
+      "title": "Holdout validation \u2014 MAPE/WAPE benchmarks",
+      "category": "validation",
+      "tags": [
+        "holdout",
+        "mape",
+        "wape",
+        "backtest",
+        "validation",
+        "fit_quality",
+        "gate"
+      ],
+      "source": "pymc_marketing/mmm/evaluation.py"
+    },
+    {
+      "id": "VALID_003",
+      "file": "chunks/diagnostics/VALID_003.md",
+      "title": "Contribution sanity checks \u2014 sum-to-total and plausibility",
+      "category": "validation",
+      "tags": [
+        "contributions",
+        "sanity_check",
+        "sum_to_total",
+        "baseline",
+        "attribution"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "VALID_004",
+      "file": "chunks/diagnostics/VALID_004.md",
+      "title": "Data quality pre-flight \u2014 NaN and CV checks",
+      "category": "validation",
+      "tags": [
+        "data_quality",
+        "nan",
+        "missing_values",
+        "cv",
+        "pre_flight",
+        "leakage"
+      ],
+      "source": "b2b_src/column_config.py"
+    },
+    {
+      "id": "REPORT_001",
+      "file": "chunks/implementation/REPORT_001.md",
+      "title": "get_individual_contributions \u2014 decomposition API",
+      "category": "reporting",
+      "tags": [
+        "contributions",
+        "decomposition",
+        "channels",
+        "intercept",
+        "seasonality"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "REPORT_002",
+      "file": "chunks/implementation/REPORT_002.md",
+      "title": "calculate_roas \u2014 ROAS with uncertainty",
+      "category": "reporting",
+      "tags": [
+        "roas",
+        "iroas",
+        "hdi",
+        "uncertainty",
+        "calculate_roas",
+        "reporting"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "REPORT_003",
+      "file": "chunks/implementation/REPORT_003.md",
+      "title": "calculate_marginal_roas \u2014 mROAS implementation note",
+      "category": "reporting",
+      "tags": [
+        "marginal_roas",
+        "mroas",
+        "visits_column",
+        "spend_mapping",
+        "implementation_note"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "REPORT_004",
+      "file": "chunks/implementation/REPORT_004.md",
+      "title": "compare_predictions \u2014 counterfactual scenario analysis",
+      "category": "reporting",
+      "tags": [
+        "counterfactual",
+        "compare_predictions",
+        "shutdown_channels",
+        "marginal_changes"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "REPORT_005",
+      "file": "chunks/implementation/REPORT_005.md",
+      "title": "analyze_revenue_vs_spend_levels \u2014 response curves",
+      "category": "reporting",
+      "tags": [
+        "response_curves",
+        "spend_levels",
+        "saturation",
+        "roas",
+        "optimization_input"
+      ],
+      "source": "b2b_src/contributions.py"
+    },
+    {
+      "id": "REPORT_006",
+      "file": "chunks/implementation/REPORT_006.md",
+      "title": "Reporting standards \u2014 ROAS table format and HDI requirement",
+      "category": "reporting",
+      "tags": [
+        "reporting",
+        "hdi",
+        "roas_table",
+        "deliverable_standards",
+        "calibration_status"
+      ],
+      "source": "delivery_summary_mmm.md"
+    },
+    {
+      "id": "OPT_001",
+      "file": "chunks/methods/OPT_001.md",
+      "title": "Budget optimizer \u2014 MultiDimensionalBudgetOptimizerWrapper",
+      "category": "optimization",
+      "tags": [
+        "budget_optimizer",
+        "slsqp",
+        "allocation",
+        "scipy",
+        "multi_dimensional"
+      ],
+      "source": "pymc_marketing/mmm/budget_optimizer.py"
+    },
+    {
+      "id": "OPT_002",
+      "file": "chunks/methods/OPT_002.md",
+      "title": "Budget optimization \u2014 scipy SLSQP manual pattern",
+      "category": "optimization",
+      "tags": [
+        "budget_optimizer",
+        "slsqp",
+        "scipy",
+        "manual",
+        "response_curves"
+      ],
+      "source": "pymc_marketing/mmm/budget_optimizer.py"
+    },
+    {
+      "id": "OPT_003",
+      "file": "chunks/methods/OPT_003.md",
+      "title": "Optimization output standards \u2014 required deliverable elements",
+      "category": "optimization",
+      "tags": [
+        "optimization",
+        "deliverable",
+        "sensitivity",
+        "marginal_roas",
+        "uncertainty"
+      ],
+      "source": "pymc_marketing/mmm/budget_optimizer.py"
+    },
+    {
+      "id": "HIER_001",
+      "file": "chunks/implementation/HIER_001.md",
+      "title": "Geo/multi-dimensional model \u2014 MMM instantiation",
+      "category": "core_modeling",
+      "tags": [
+        "geo",
+        "multi_dimensional",
+        "hierarchical",
+        "dims",
+        "pooling"
+      ],
+      "source": "pymc_marketing/mmm/multidimensional.py"
+    },
+    {
+      "id": "HIER_002",
+      "file": "chunks/implementation/HIER_002.md",
+      "title": "Pooling strategy \u2014 when to pool, partial pool, or unpool",
+      "category": "core_modeling",
+      "tags": [
+        "hierarchical",
+        "pooling",
+        "partial_pooling",
+        "unpooled",
+        "geo"
+      ],
+      "source": "geo_config.yml"
+    },
+    {
+      "id": "HIER_003",
+      "file": "chunks/implementation/HIER_003.md",
+      "title": "Collinearity \u2014 diagnosis and mitigation",
+      "category": "core_modeling",
+      "tags": [
+        "collinearity",
+        "correlation",
+        "identification",
+        "pitfall",
+        "channels"
+      ],
+      "source": "b2b_src/column_config.py"
+    },
+    {
+      "id": "HIER_004",
+      "file": "chunks/implementation/HIER_004.md",
+      "title": "Data contract \u2014 column_config and channel type declaration",
+      "category": "core_modeling",
+      "tags": [
+        "data_contract",
+        "column_config",
+        "paid_channels",
+        "spend_mapping",
+        "schema"
+      ],
+      "source": "b2b_src/column_config.py"
+    },
+    {
+      "id": "UTIL_001",
+      "file": "chunks/implementation/UTIL_001.md",
+      "title": "Divergence triage \u2014 diagnosis and fixes",
+      "category": "core_modeling",
+      "tags": [
+        "divergences",
+        "convergence",
+        "funnel",
+        "reparameterize",
+        "debug"
+      ],
+      "source": "playbook"
+    },
+    {
+      "id": "UTIL_002",
+      "file": "chunks/implementation/UTIL_002.md",
+      "title": "idata I/O \u2014 save and reload InferenceData",
+      "category": "core_modeling",
+      "tags": [
+        "idata",
+        "save",
+        "load",
+        "netcdf",
+        "reproducibility",
+        "checkpoint"
+      ],
+      "source": "pymc_marketing/model_builder.py"
+    },
+    {
+      "id": "UTIL_003",
+      "file": "chunks/diagnostics/UTIL_003.md",
+      "title": "Promo confounding \u2014 detection and mitigation",
+      "category": "validation",
+      "tags": [
+        "promo",
+        "confounding",
+        "event",
+        "dummy",
+        "attribution",
+        "pitfall"
+      ],
+      "source": "playbook"
+    },
+    {
+      "id": "UTIL_004",
+      "file": "chunks/diagnostics/UTIL_004.md",
+      "title": "Escalation rules \u2014 when to stop and escalate",
+      "category": "validation",
+      "tags": [
+        "escalation",
+        "gate",
+        "convergence",
+        "mape",
+        "experiment_conflict"
+      ],
+      "source": "playbook"
+    },
+    {
+      "id": "UTIL_005",
+      "file": "chunks/implementation/UTIL_005.md",
+      "title": "YAML config loading \u2014 build_from_yml pattern",
+      "category": "core_modeling",
+      "tags": [
+        "yaml",
+        "config",
+        "build_from_yml",
+        "adstock",
+        "saturation",
+        "serialization"
+      ],
+      "source": "pymc_marketing/mmm/builders/yaml.py"
+    }
+  ]
+}

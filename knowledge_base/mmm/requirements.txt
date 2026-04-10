@@ -1,0 +1,33 @@
+# Exact environment for test_synthetic_mmm (SYNTH-MMM-2026-001)
+# Frozen: 2026-02-24 | Python 3.12 | conda env: pymc-marketing-dev
+
+# Core MMM stack
+pymc-marketing==0.18.2
+pymc==5.28.0
+pytensor==2.38.0
+pymc-extras==0.8.0
+
+# Inference backend
+numpyro==0.20.0
+jax==0.9.0.1
+jaxlib==0.9.0.1
+
+# Bayesian diagnostics
+arviz==0.23.4
+arviz-stats==0.8.0
+preliz==0.23.0
+
+# Data / numerics
+numpy==2.4.2
+pandas==3.0.1
+scipy==1.17.1
+xarray==2026.2.0
+xarray-einstats==0.10.0
+statsmodels==0.14.6
+
+# ML utilities
+scikit-learn==1.8.0
+
+# Visualisation
+matplotlib==3.10.8
+seaborn==0.13.2

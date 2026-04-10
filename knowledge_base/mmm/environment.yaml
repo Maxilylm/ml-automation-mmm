@@ -1,0 +1,19 @@
+name: BMMM-env
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy[version='>=1.17']
+  - pip
+  - pandas
+  - pymc-extras[version='>=0.2.7']
+  - scikit-learn[version='>=1.1.1']
+  - xarray-einstats[version='>=0.5.1']
+  - scipy[version='>=1.15']
+  - arviz[version='>=0.13.0']
+  - seaborn[version='>=0.12.2']
+  - pymc[version='>=5.23.0']
+  - xarray
+  - pytensor[version='>=2.31.3']
+  - statsmodels
+  - matplotlib[version='>=3.5.1']

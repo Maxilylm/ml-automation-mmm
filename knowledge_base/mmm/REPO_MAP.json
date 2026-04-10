@@ -1,0 +1,336 @@
+{
+  "repo_name": "MMM_Multiplicative_Hierarchical",
+  "distilled_at": "2026-02-22",
+  "domain": "mmm",
+  "summary": "A hierarchical multiplicative Marketing Mix Model (MMM) codebase built on PyMC. It models sales/conversions as a multiplicative function of adstocked+saturated channel spend, seasonality, trend, and control variables. Supports geo-level and brand-level hierarchical pooling, calibration to lift experiments, Bayesian priors/constraints, budget optimization via scipy, and automated reporting of ROAS/ROI and response curves.",
+  "groups": [
+    {
+      "name": "core_modeling",
+      "description": "Defines the Bayesian PyMC model graph, the multiplicative likelihood, hierarchical pooling layers, and NUTS/ADVI sampling logic.",
+      "files": [
+        {
+          "path": "pymc_marketing/mmm/mmm.py",
+          "role": "Main model builder. Constructs the PyMC multiplicative MMM model, wires adstock/saturation transforms, seasonality, trend, and hierarchical intercepts. Entry point for pm.sample().",
+          "inputs": ["config dict", "preprocessed spend/KPI DataFrame"],
+          "outputs": ["pm.Model", "InferenceData (idata)"],
+          "dependencies": ["transformers/", "prior.py", "model_builder.py"],
+          "tags": ["core_modeling", "pymc", "multiplicative", "bayesian"],
+          "keep_decision": "keep",
+          "confidence": 0.97,
+          "recommended_reuse": "Copy as the model scaffold; replace channel list and likelihood family as needed."
+        },
+        {
+          "path": "pymc_marketing/mmm/base.py",
+          "role": "Abstract base class for MMM models. Defines the fit/predict/score interface, shared preprocessing hooks, idata I/O, and plotting dispatch.",
+          "inputs": ["DataFrame", "model config"],
+          "outputs": ["InferenceData"],
+          "dependencies": ["model_builder.py"],
+          "tags": ["core_modeling", "base_class", "interface"],
+          "keep_decision": "keep",
+          "confidence": 0.95,
+          "recommended_reuse": "Subclass for custom model variants; override _build_model() and keep fit/predict interface."
+        },
+        {
+          "path": "pymc_marketing/model_builder.py",
+          "role": "Generic PyMC model scaffolding: prior predictive sampling, posterior sampling, MCMC config validation, and idata serialisation. Shared by MMM and CLV modules.",
+          "inputs": ["pm.Model", "sampler kwargs"],
+          "outputs": ["InferenceData (idata)"],
+          "dependencies": [],
+          "tags": ["core_modeling", "pymc", "sampling"],
+          "keep_decision": "keep",
+          "confidence": 0.93,
+          "recommended_reuse": "Use ModelBuilder.fit() directly; configure via sampler_config dict (draws, tune, chains, target_accept)."
+        },
+        {
+          "path": "pymc_marketing/mmm/components/",
+          "role": "Component registry for plug-in adstock and saturation transforms. Each component exposes apply() and contributes PyMC variables to the active model context.",
+          "inputs": ["spend tensor", "component config"],
+          "outputs": ["transformed spend tensor"],
+          "dependencies": ["components/adstock.py", "components/saturation.py"],
+          "tags": ["core_modeling", "transformations", "component_pattern"],
+          "keep_decision": "keep",
+          "confidence": 0.94,
+          "recommended_reuse": "Register custom transforms here; avoids touching mmm.py directly."
+        }
+      ]
+    },
+    {
+      "name": "transformations",
+      "description": "Adstock (carryover) and saturation (diminishing returns) transforms applied to raw channel spend before entering the model. Vectorised for PyMC tensor operations.",
+      "files": [
+        {
+          "path": "pymc_marketing/mmm/components/adstock.py",
+          "role": "Implements geometric and Weibull adstock. geometric_adstock() is the standard; weibull_adstock() used for long-lag channels (TV, OOH). Both vectorised over channels.",
+          "inputs": ["spend tensor", "alpha (retention rate) or Weibull (shape, scale)"],
+          "outputs": ["adstocked spend tensor"],
+          "dependencies": [],
+          "tags": ["transformations", "adstock", "carryover"],
+          "keep_decision": "keep",
+          "confidence": 0.97,
+          "recommended_reuse": "Use geometric_adstock() as default; switch to weibull_adstock() for TV/OOH. Alpha prior: Beta(2,2)."
+        },
+        {
+          "path": "pymc_marketing/mmm/components/saturation.py",
+          "role": "Implements Hill (S-curve) and logistic saturation. Hill is default; logistic used when theoretical max market size is known.",
+          "inputs": ["adstocked spend", "slope (k) and half-saturation (K_half) or logistic params"],
+          "outputs": ["saturated spend in [0,1] or [0, max_val]"],
+          "dependencies": [],
+          "tags": ["transformations", "saturation", "hill", "diminishing_returns"],
+          "keep_decision": "keep",
+          "confidence": 0.97,
+          "recommended_reuse": "Default to Hill saturation. Set K_half prior centred near observed median spend per channel."
+        },
+        {
+          "path": "pymc_marketing/mmm/transformers/",
+          "role": "Legacy transformer classes (GeometricAdstockTransformer, HillSaturationTransformer) kept for backwards compatibility. The components/ directory is the preferred API.",
+          "inputs": ["spend array"],
+          "outputs": ["transformed spend array"],
+          "dependencies": [],
+          "tags": ["transformations", "adstock", "saturation", "legacy"],
+          "keep_decision": "summarize",
+          "confidence": 0.85,
+          "recommended_reuse": "Prefer components/ API for new projects; use transformers/ only if integrating with older client codebases."
+        }
+      ]
+    },
+    {
+      "name": "priors_constraints",
+      "description": "Centralised prior specifications and hard constraints for all model parameters. Loaded from YAML; enforced at model-build time.",
+      "files": [
+        {
+          "path": "pymc_marketing/prior.py",
+          "role": "Reads prior specs (dict or YAML) and constructs PyMC prior distributions for each parameter group (intercept, channel coefs, adstock, saturation, noise). Enforces positivity constraints on channel contributions.",
+          "inputs": ["prior spec dict or YAML path"],
+          "outputs": ["dict of pm.Distribution objects"],
+          "dependencies": [],
+          "tags": ["priors_constraints", "bayesian", "priors"],
+          "keep_decision": "keep",
+          "confidence": 0.96,
+          "recommended_reuse": "Always load from YAML; override individual priors per-channel if experiment data available."
+        },
+        {
+          "path": "pymc_marketing/special_priors.py",
+          "role": "Custom prior families not in standard PyMC: HalfStudentT, MvNormalNonCentered, and MonotonicallyIncreasing for budget response constraints.",
+          "inputs": ["distribution parameters"],
+          "outputs": ["pm.Distribution subclass instances"],
+          "dependencies": [],
+          "tags": ["priors_constraints", "bayesian", "custom_distributions"],
+          "keep_decision": "keep",
+          "confidence": 0.90,
+          "recommended_reuse": "Use MvNormalNonCentered for correlated channel effects; HalfStudentT for heavier-tailed noise."
+        },
+        {
+          "path": "mmm_config.yml",
+          "role": "Master run config: channel list, date column, KPI column, geo column, model variant (national/geo/hierarchical), sampler settings (draws, tune, chains, target_accept), and output paths.",
+          "inputs": [],
+          "outputs": ["config dict consumed by run pipeline"],
+          "dependencies": [],
+          "tags": ["priors_constraints", "config", "yaml"],
+          "keep_decision": "keep",
+          "confidence": 0.96,
+          "recommended_reuse": "Primary config file to clone per project; update channel names and KPI column first."
+        },
+        {
+          "path": "geo_config.yml",
+          "role": "Geo-specific config: geo list, geo-to-region mapping, holdout geo flags for lift calibration, geo spend columns.",
+          "inputs": [],
+          "outputs": ["geo config consumed by geo model variant"],
+          "dependencies": [],
+          "tags": ["priors_constraints", "config", "geo", "yaml"],
+          "keep_decision": "keep",
+          "confidence": 0.93,
+          "recommended_reuse": "Clone per geo project; populate holdout_geos with experiment control geos."
+        }
+      ]
+    },
+    {
+      "name": "calibration",
+      "description": "Calibrates posterior channel contributions to geo-lift / incrementality experiments via likelihood penalties or informative priors on ROAS.",
+      "files": [
+        {
+          "path": "b2b_src/lift_test_and_target_lift.py",
+          "role": "Implements geo-lift calibration: translates experiment-measured lift % into an ROAS target, then adds a likelihood penalty (Normal or LogNormal) to the model log-prob to pull channel contribution posteriors toward the experiment estimate.",
+          "inputs": ["experiment results dict (geo, channel, lift_pct, spend)", "idata"],
+          "outputs": ["calibration_potential (PyMC Potential node)"],
+          "dependencies": ["mmm.py"],
+          "tags": ["calibration", "geo_lift", "experiment", "roas"],
+          "keep_decision": "keep",
+          "confidence": 0.96,
+          "recommended_reuse": "Always apply when geo-lift or conversion-lift experiments are available. Sigma of calibration Normal = 0.2 * measured_roas by default."
+        },
+        {
+          "path": "b2b_src/column_config.py",
+          "role": "Defines the canonical column schema: spend column names, impressions columns, cost-per-unit fields, and channel-to-media-type mapping. Used across data loading, transformations, and reporting.",
+          "inputs": ["mmm_config.yml"],
+          "outputs": ["ColumnConfig dataclass"],
+          "dependencies": ["config_loader.py"],
+          "tags": ["calibration", "data_contracts", "schema"],
+          "keep_decision": "keep",
+          "confidence": 0.93,
+          "recommended_reuse": "Always populate ColumnConfig first when onboarding a new client; drives all downstream column references."
+        },
+        {
+          "path": "b2b_src/config_loader.py",
+          "role": "Loads and validates YAML config files. Provides get_config() singleton and raises descriptive errors on missing/invalid fields.",
+          "inputs": ["YAML file path"],
+          "outputs": ["validated config dict"],
+          "dependencies": [],
+          "tags": ["calibration", "config", "utilities"],
+          "keep_decision": "keep",
+          "confidence": 0.92,
+          "recommended_reuse": "Use get_config() as the single config access point; add new fields with defaults to avoid breaking existing configs."
+        }
+      ]
+    },
+    {
+      "name": "validation",
+      "description": "Posterior predictive checks, holdout backtesting, MAPE/WAPE metrics, convergence diagnostics (R-hat, ESS), and sanity checks on channel contributions.",
+      "files": [
+        {
+          "path": "pymc_marketing/mmm/base.py",
+          "role": "Provides plot_posterior_predictive(), get_errors(), and score() methods. Computes in-sample MAPE and holds idata for downstream diagnostics.",
+          "inputs": ["idata", "observed DataFrame"],
+          "outputs": ["error metrics dict", "posterior predictive plot"],
+          "dependencies": [],
+          "tags": ["validation", "posterior_predictive", "metrics"],
+          "keep_decision": "keep",
+          "confidence": 0.94,
+          "recommended_reuse": "Call model.get_errors() after sampling; gate delivery on MAPE < 10% and all R-hat < 1.01."
+        },
+        {
+          "path": "COLUMN_CONFIG_FIX_SUMMARY.md",
+          "role": "Documents the column config schema fix: explains why a breaking change was made to column_config.py and how to migrate existing configs. Useful as a change-log reference.",
+          "inputs": [],
+          "outputs": [],
+          "dependencies": [],
+          "tags": ["validation", "docs", "migration"],
+          "keep_decision": "summarize",
+          "confidence": 0.80,
+          "recommended_reuse": "Read before cloning column_config.py to avoid the pre-fix schema pitfalls."
+        },
+        {
+          "path": "COMPLETE_FIX_SUMMARY.md",
+          "role": "Comprehensive bug-fix record covering decorator issues, column config issues, and model build errors. Documents root cause and resolution for each.",
+          "inputs": [],
+          "outputs": [],
+          "dependencies": [],
+          "tags": ["validation", "docs", "debugging"],
+          "keep_decision": "summarize",
+          "confidence": 0.82,
+          "recommended_reuse": "Reference when debugging model build errors; many common issues documented here."
+        }
+      ]
+    },
+    {
+      "name": "reporting",
+      "description": "Generates response curves, contribution decomposition, ROAS/ROI tables, and formatted client-ready output files.",
+      "files": [
+        {
+          "path": "pymc_marketing/mmm/mmm.py",
+          "role": "Provides plot_channel_contribution_share_of_total(), get_channel_contributions_share_of_total(), and plot_direct_contribution_curves() for client reporting.",
+          "inputs": ["idata", "spend DataFrame"],
+          "outputs": ["contribution DataFrames", "matplotlib figures"],
+          "dependencies": [],
+          "tags": ["reporting", "roas", "decomposition", "visualisation"],
+          "keep_decision": "keep",
+          "confidence": 0.95,
+          "recommended_reuse": "Call plot_channel_contribution_share_of_total() for client deck visuals; always show 89% HDI."
+        },
+        {
+          "path": "QUICK_START.md",
+          "role": "Step-by-step guide for running the full pipeline from data load to report. Includes example config snippets and expected output shapes.",
+          "inputs": [],
+          "outputs": [],
+          "dependencies": [],
+          "tags": ["reporting", "docs", "onboarding"],
+          "keep_decision": "keep",
+          "confidence": 0.90,
+          "recommended_reuse": "Share with new team members as the first reference; contains end-to-end worked example."
+        }
+      ]
+    },
+    {
+      "name": "optimization",
+      "description": "Budget allocation optimizer using posterior response curves and scipy constrained optimization.",
+      "files": [
+        {
+          "path": "pymc_marketing/mmm/mmm.py",
+          "role": "Provides optimize_budget() method: sweeps response curves, runs SLSQP optimisation to maximise expected KPI given a total spend constraint, returns optimal spend vector and expected lift.",
+          "inputs": ["total_budget", "channel_bounds dict", "idata"],
+          "outputs": ["optimal_allocation dict", "expected_kpi_lift"],
+          "dependencies": ["components/"],
+          "tags": ["optimization", "budget", "roas", "scipy"],
+          "keep_decision": "keep",
+          "confidence": 0.94,
+          "recommended_reuse": "Use optimize_budget() with posterior mean curves; also run with HDI bounds to report uncertainty in allocation."
+        }
+      ]
+    },
+    {
+      "name": "data_ingestion",
+      "description": "Data loading, validation, and preprocessing pipeline that converts raw client data into model-ready arrays.",
+      "files": [
+        {
+          "path": "b2b_src/column_config.py",
+          "role": "Canonical column schema definition. Maps client column names to internal schema; validates presence of required columns at load time.",
+          "inputs": ["mmm_config.yml column specs"],
+          "outputs": ["ColumnConfig dataclass"],
+          "dependencies": ["config_loader.py"],
+          "tags": ["data_ingestion", "data_contracts", "schema", "validation"],
+          "keep_decision": "keep",
+          "confidence": 0.93,
+          "recommended_reuse": "Start here when onboarding a new client dataset; populate before writing any preprocessing code."
+        },
+        {
+          "path": "b2b_src/config_loader.py",
+          "role": "Loads and validates YAML config files. Provides get_config() singleton with descriptive error messages on invalid fields.",
+          "inputs": ["YAML file path"],
+          "outputs": ["validated config dict"],
+          "dependencies": [],
+          "tags": ["data_ingestion", "config", "utilities"],
+          "keep_decision": "keep",
+          "confidence": 0.92,
+          "recommended_reuse": "Single config access point across the pipeline; extend with new fields using Optional with defaults."
+        }
+      ]
+    }
+  ],
+  "entry_points": [
+    "QUICK_START.md -- step-by-step pipeline walkthrough with example config",
+    "pymc_marketing/mmm/mmm.py -- MMM class: mmm = MMM(**config); mmm.fit(X, y); mmm.get_channel_contributions()",
+    "pymc_marketing/mmm/base.py -- MMMBase.fit() for programmatic pipeline use"
+  ],
+  "key_dependencies": [
+    "pymc>=5.0",
+    "pytensor",
+    "arviz>=0.16",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pyyaml",
+    "matplotlib>=3.7",
+    "pymc-marketing (the package itself; pip install pymc-marketing)"
+  ],
+  "module_dependency_graph": {
+    "pymc_marketing/mmm/mmm.py": ["pymc_marketing/mmm/base.py", "pymc_marketing/mmm/components/", "pymc_marketing/prior.py", "pymc_marketing/special_priors.py"],
+    "pymc_marketing/mmm/base.py": ["pymc_marketing/model_builder.py"],
+    "pymc_marketing/mmm/components/adstock.py": [],
+    "pymc_marketing/mmm/components/saturation.py": [],
+    "pymc_marketing/prior.py": [],
+    "pymc_marketing/special_priors.py": [],
+    "b2b_src/lift_test_and_target_lift.py": ["pymc_marketing/mmm/mmm.py"],
+    "b2b_src/column_config.py": ["b2b_src/config_loader.py"],
+    "b2b_src/config_loader.py": []
+  },
+  "mmm_specific_notes": {
+    "model_form": "Multiplicative: KPI ~ base * prod(channel_contributions_i) * noise (or additive variant via likelihood param)",
+    "adstock_choices": "geometric_adstock (default, paid digital); weibull_adstock (TV, OOH, long-lag channels)",
+    "saturation_choices": "Hill saturation (default); logistic when theoretical market size cap is known",
+    "hierarchical_pooling": "Partial pooling available via non-centered parameterisation; geo- and brand-level group effects on intercept and channel betas",
+    "calibration_approach": "Geo-lift experiments -> ROAS target -> Normal likelihood penalty (sigma = 0.2 * measured_roas by default)",
+    "convergence_thresholds": "R-hat < 1.01, bulk-ESS > 400, divergences < 1% of draws — hard gates before reporting",
+    "roas_reporting": "Posterior mean + 89% HDI per channel; decomposition validates sum-to-total",
+    "optimization": "SLSQP constrained optimization on posterior mean response curves; run also on HDI bounds for uncertainty range",
+    "key_pitfall": "Always check column_config.py schema match before first model run; most build errors trace to column name mismatches (see COMPLETE_FIX_SUMMARY.md)"
+  }
+}

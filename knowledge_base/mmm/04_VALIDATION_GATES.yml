@@ -1,0 +1,214 @@
+# MMM Validation Checklist
+# Used by: mmm-validator agent
+# Version: 2026-02-22
+
+meta:
+  domain: mmm
+  version: "2026-02-22"
+  instructions: >
+    Each item has a severity (critical / high / medium / low).
+    Report pass/fail/na for each. Flag all critical failures before proceeding.
+    Never deliver results with any critical failure unresolved.
+
+categories:
+
+  convergence:
+    description: "MCMC sampling quality"
+    items:
+      - id: C1
+        check: "R-hat < 1.01 for ALL sampled parameters"
+        severity: critical
+        how_to_check: "az.summary(idata); inspect r_hat column"
+        action_if_fail: "Increase tune steps; check prior/likelihood conflict; reparameterize adstock/saturation"
+
+      - id: C2
+        check: "Bulk-ESS > 400 for all parameters"
+        severity: critical
+        how_to_check: "az.summary(idata); inspect ess_bulk column"
+        action_if_fail: "Increase draws; raise target_accept"
+
+      - id: C3
+        check: "Tail-ESS > 200 for all parameters"
+        severity: high
+        how_to_check: "az.summary(idata); inspect ess_tail column"
+        action_if_fail: "More draws; reparameterize"
+
+      - id: C4
+        check: "Divergences = 0 (tolerate < 5 with justification)"
+        severity: critical
+        how_to_check: "idata.sample_stats.diverging.sum().item()"
+        action_if_fail: "Raise target_accept to 0.95; non-centered parameterization for hierarchical params"
+
+      - id: C5
+        check: "Max tree depth hits < 5% of draws"
+        severity: medium
+        how_to_check: "idata.sample_stats.tree_depth.max()"
+        action_if_fail: "Simplify model; switch to non-centered parameterization"
+
+  fit_quality:
+    description: "In-sample and out-of-sample predictive accuracy"
+    items:
+      - id: F1
+        check: "In-sample MAPE < 15% (B2B: < 20%)"
+        severity: critical
+        how_to_check: "Compute MAPE on training predictions vs observed"
+        action_if_fail: "Inspect residuals by period; check for missing controls or structural breaks"
+
+      - id: F2
+        check: "Holdout MAPE < 20% (B2B: < 25%)"
+        severity: critical
+        how_to_check: "Hold out last 8 (B2B: 12) weeks; compute MAPE"
+        action_if_fail: "Check holdout period for anomalies; add holdout-period controls; consider structural break"
+
+      - id: F3
+        check: "Posterior predictive 94% HDI covers observed in >= 85% of training weeks"
+        severity: high
+        how_to_check: "sample_posterior_predictive; count coverage"
+        action_if_fail: "Widen likelihood sigma prior; check for outliers"
+
+      - id: F4
+        check: "No autocorrelation in residuals (Durbin-Watson 1.5–2.5)"
+        severity: medium
+        how_to_check: "statsmodels durbin_watson on mean residuals"
+        action_if_fail: "Add lagged target or AR component; check adstock lag window"
+
+  plausibility:
+    description: "Sanity checks on contributions and parameters"
+    items:
+      - id: P1
+        check: "All channel contributions are non-negative"
+        severity: critical
+        how_to_check: "Check get_individual_contributions() output; all values >= 0"
+        action_if_fail: "Multiplicative model should guarantee this; if negative, check log-transform logic"
+
+      - id: P2
+        check: "Sum of contributions equals total predicted revenue (within 1%)"
+        severity: critical
+        how_to_check: "sum(contribs) / predicted_revenue - 1; abs < 0.01"
+        action_if_fail: "Bug in contribution calculation — do not deliver until resolved"
+
+      - id: P3
+        check: "Baseline (intercept + seasonality) is 30–70% of total predicted revenue"
+        severity: high
+        how_to_check: "baseline_contribution / total_predicted"
+        action_if_fail: "< 30%: check for data leakage or over-attribution to channels; > 70%: check channel spend variation"
+
+      - id: P4
+        check: "No single channel exceeds 60% of total predicted revenue"
+        severity: high
+        how_to_check: "channel_contribution / total_predicted for each channel"
+        action_if_fail: "Investigate if channel truly dominates; check for collinearity with other channels"
+
+      - id: P5
+        check: "Adstock alpha posteriors are within (0, 0.9) for all channels"
+        severity: high
+        how_to_check: "az.summary for adstock_alpha params; check mean and HDI"
+        action_if_fail: "Alpha near 1 = channel effect never decays; check prior and data variation"
+
+      - id: P6
+        check: "Saturation lambda posteriors are positive and finite"
+        severity: high
+        how_to_check: "az.summary for saturation_lam params"
+        action_if_fail: "Flat or near-zero lam = saturation not identified; set NoSaturation for that channel"
+
+  leakage:
+    description: "Data leakage checks"
+    items:
+      - id: L1
+        check: "Train/holdout split performed BEFORE normalization"
+        severity: critical
+        how_to_check: "Code review of preprocessing pipeline"
+        action_if_fail: "Re-split and refit; do not deliver contaminated results"
+
+      - id: L2
+        check: "Normalization scalers fitted on training set only"
+        severity: critical
+        how_to_check: "Code review; verify scaler.fit() called on train, scaler.transform() on holdout"
+        action_if_fail: "Same as L1"
+
+      - id: L3
+        check: "No future-looking features in model (no lookahead)"
+        severity: critical
+        how_to_check: "Review all control variables for forward-filling or future information"
+        action_if_fail: "Remove feature; refit"
+
+      - id: L4
+        check: "In-sample and holdout MAPE gap < 10 percentage points"
+        severity: high
+        how_to_check: "holdout_mape - insample_mape < 0.10"
+        action_if_fail: "Gap > 10pp suggests leakage or overfitting; investigate feature set"
+
+  stability:
+    description: "Result stability and robustness"
+    items:
+      - id: S1
+        check: "ROAS estimates stable under ±4 week holdout shift (within ±20%)"
+        severity: high
+        how_to_check: "Refit with holdout shifted 4 weeks earlier; compare channel ROAS"
+        action_if_fail: "Results depend on specific holdout period; document as low-confidence finding"
+
+      - id: S2
+        check: "Posterior ROAS HDI width < 3× the point estimate (not wildly uncertain)"
+        severity: medium
+        how_to_check: "(hdi_upper - hdi_lower) / roas_mean < 3"
+        action_if_fail: "Widen is acceptable but must be communicated; consider more informative priors from experiments"
+
+      - id: S3
+        check: "Model results consistent with prior run (if applicable) — no >30% ROAS shift without explanation"
+        severity: medium
+        how_to_check: "Compare to previous model version deliverable"
+        action_if_fail: "Document the change; confirm data or modeling change explains the shift"
+
+  calibration:
+    description: "Alignment to experiment evidence (if experiments available)"
+    items:
+      - id: CAL1
+        check: "Posterior iROAS within 15% of experiment estimate for calibrated channels"
+        severity: critical
+        how_to_check: "Compare posterior mean iROAS to measured experiment iROAS"
+        action_if_fail: "Investigate likelihood conflict; check spend data and experiment validity"
+
+      - id: CAL2
+        check: "Calibration likelihood sigma has not collapsed to near-zero"
+        severity: high
+        how_to_check: "Inspect posterior of calibration sigma; should be > 0.05 × measured_roas"
+        action_if_fail: "Likelihood conflict — over-confident calibration; widen sigma"
+
+      - id: CAL3
+        check: "Uncalibrated channels flagged in deliverable"
+        severity: high
+        how_to_check: "Deliverable has calibration status column"
+        action_if_fail: "Add calibration status table before delivery"
+
+  reporting:
+    description: "Deliverable completeness and accuracy"
+    items:
+      - id: R1
+        check: "All ROAS figures reported with 90% HDI (not point estimates alone)"
+        severity: critical
+        how_to_check: "Review final deliverable"
+        action_if_fail: "Add HDI; reject deliverable without it"
+
+      - id: R2
+        check: "Decomposition sum-to-total verified (within 1%)"
+        severity: critical
+        how_to_check: "sum(contributions) == total_predicted"
+        action_if_fail: "Bug in reporting code — fix before delivery"
+
+      - id: R3
+        check: "Response curves show 90% HDI bands"
+        severity: high
+        how_to_check: "Review curve plots"
+        action_if_fail: "Add HDI bands to plots"
+
+      - id: R4
+        check: "Budget optimization cap at 1.5–2× max observed spend stated explicitly"
+        severity: medium
+        how_to_check: "Review optimization output"
+        action_if_fail: "Add cap documentation and warning"
+
+      - id: R5
+        check: "Calibration status table present (channel, experiment, calibrated Y/N, iROAS, HDI)"
+        severity: high
+        how_to_check: "Review deliverable"
+        action_if_fail: "Add table before delivery"

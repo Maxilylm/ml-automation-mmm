@@ -16,12 +16,21 @@ Make sure the Bayesian MMM runtime environment exists at `knowledge_base/mmm/BMM
 - When setting up a new machine or project for the first time
 - After a failed training run where the environment may be corrupted or incomplete
 
+## PyMC Compatibility (v1.1.0)
+
+The environment MUST pin `pytensor>=2.18` to avoid C compilation failures on macOS ARM and silent backend fallbacks. When seeding dependency files, always include:
+```
+pytensor>=2.18
+pymc>=5.10
+pymc-marketing>=0.7
+```
+
 ## Workflow
 
-1. **Stage 1 — Check Existing Environment**: If env directory already exists, reuse it
-2. **Stage 2 — Create from Specs**: If `environment.yaml` or `requirements.txt` exist but env does not, create from those files
-3. **Stage 3 — Seed and Create**: On first run, generates seed dependency files then creates the environment
-4. **Stage 4 — Verify**: Runs an import check for `pymc` and `pymc_marketing` inside the env to confirm success
+1. **Stage 1 — Check Existing Environment**: If env directory already exists, verify `pytensor>=2.18` is installed. If not, upgrade it in-place: `pip install 'pytensor>=2.18'`
+2. **Stage 2 — Create from Specs**: If `environment.yaml` or `requirements.txt` exist but env does not, create from those files. Ensure `pytensor>=2.18` is present in the spec before creating.
+3. **Stage 3 — Seed and Create**: On first run, generates seed dependency files (with `pytensor>=2.18` pinned) then creates the environment
+4. **Stage 4 — Verify**: Runs an import check for `pymc`, `pymc_marketing`, and `pytensor` (version >= 2.18) inside the env to confirm success
 
 ## Report Bus Integration
 

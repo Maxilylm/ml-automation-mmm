@@ -1,6 +1,6 @@
 {
   "name": "spark-mmm",
-  "version": "0.2.0",
+  "version": "1.1.0",
   "description": "Media Mix Modeling extension for spark. Bayesian MMM with adstock, saturation, channel attribution, and client-ready reporting.",
   "author": { "name": "Maximo Lorenzo y Losada" },
   "repository": "https://github.com/Maxilylm/ml-automation-mmm",

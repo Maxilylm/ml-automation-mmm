@@ -38,7 +38,11 @@ PYTENSOR_FLAGS_VAL=$([ "$RUNNER" = "py" ] && echo "cxx=" || echo "")
 $RUNNER scripts/ensure_domain_env.py --domain mmm --env_dir ./knowledge_base/mmm/BMMM-env
 ```
 
-### 2) Run training (MCMC)
+### 2) Run training (MCMC with informative priors — v1.1.0)
+
+**CRITICAL**: The build script MUST use `pm.sample()` with informative priors. Never use `pm.find_MAP()` as the final result — MLE cannot encode domain knowledge and overfits on small marketing datasets.
+
+Required: positive channel coefficients (`HalfNormal`), bounded adstock decay (`Beta`), informative saturation (`Gamma`). See the train-bmmm skill for the full prior specification.
 
 ```bash
 project="<project_name>"
@@ -53,6 +57,28 @@ else
     $RUNNER scripts/run_in_env.py --domain mmm -- \
     python scripts/mmm/build.py --project_name "$project" --run_id "$run_id" 2>&1
 fi
+```
+
+### 2b) Convergence Check (v1.1.0)
+
+After MCMC completes, verify convergence before proceeding:
+```bash
+PYTENSOR_FLAGS="$PYTENSOR_FLAGS_VAL" PYTHONIOENCODING="utf-8" \
+  $RUNNER scripts/run_in_env.py --domain mmm --no_ensure -- \
+  python -c "
+import arviz as az, json, sys
+idata = az.from_netcdf('$project/outputs/trace.nc')
+summary = az.summary(idata)
+rhat_ok = (summary['r_hat'] < 1.05).all()
+ess_ok = (summary['ess_bulk'] > 400).all()
+divs = idata.sample_stats['diverging'].values.sum()
+div_ok = divs / idata.sample_stats['diverging'].values.size < 0.05
+print(json.dumps({'rhat_ok': bool(rhat_ok), 'ess_ok': bool(ess_ok), 'divergences': int(divs), 'div_ok': bool(div_ok)}))
+if not (rhat_ok and ess_ok and div_ok): sys.exit(1)
+"
+```
+
+If convergence fails: increase `target_accept` (0.95-0.99), tighten priors, check data scaling. Do NOT fall back to MLE.
 ```
 
 ### 3) Write self-assessment (MUST run — even if training failed)

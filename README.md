@@ -17,11 +17,11 @@ claude plugin add /path/to/spark-mmm
 
 ### Agents
 
-| Agent | Purpose | Hooks Into |
-|---|---|---|
-| `mmm-methodologist` | Design and review MMM models | `after-eda` |
-| `mmm-validator` | Validate MMM results | `after-evaluation` |
-| `mmm-communicator` | Client-ready business narratives | *(MMM workflows only)* |
+| Agent | Purpose |
+|---|---|
+| `mmm-methodologist` | Design and review MMM models |
+| `mmm-validator` | Validate MMM results |
+| `mmm-communicator` | Client-ready business narratives |
 
 ### Commands
 

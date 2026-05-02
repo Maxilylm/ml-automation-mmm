@@ -6,8 +6,6 @@ color: "#E85D04"
 tools: [Read, Write, Bash(*), Glob, Grep]
 extends: spark
 routing_keywords: [mmm validation, mmm diagnostics, mmm plausibility, roas check, contribution check, mmm verify]
-hooks_into:
-  - after-evaluation
 ---
 
 # MMM Validator

@@ -6,8 +6,6 @@ color: "#FF6B35"
 tools: [Read, Write, Bash(*), Glob, Grep]
 extends: spark
 routing_keywords: [mmm, media mix, marketing mix, adstock, saturation, bayesian mmm, channel attribution, media optimization, marketing budget, roas]
-hooks_into:
-  - after-eda
 ---
 
 # MMM Methodologist

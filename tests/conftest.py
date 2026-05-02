@@ -14,7 +14,7 @@ def mock_llm_response():
                 "text": "Test MMM model initialized successfully."
             }
         ],
-        "model": "claude-3-5-sonnet-20241022",
+        "model": "claude-opus-4-7",
         "usage": {
             "input_tokens": 100,
             "output_tokens": 50
